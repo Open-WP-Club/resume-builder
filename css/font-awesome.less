@@ -1,0 +1,76 @@
+/*!
+ *  Font Awesome 4.0.0
+ *  the iconic font designed for Bootstrap
+ *  ------------------------------------------------------------------------------
+ *  The full suite of pictographic icons, examples, and documentation can be
+ *  found at http://fontawesome.io.  Stay up to date on Twitter at
+ *  http://twitter.com/fontawesome.
+ *
+ *  License
+ *  ------------------------------------------------------------------------------
+ *  - The Font Awesome font is licensed under SIL OFL 1.1 -
+ *    http://scripts.sil.org/OFL
+ *  - Font Awesome CSS, LESS, and SASS files are licensed under MIT License -
+ *    http://opensource.org/licenses/mit-license.html
+ *  - Font Awesome documentation licensed under CC BY 3.0 -
+ *    http://creativecommons.org/licenses/by/3.0/
+ *  - Attribution is no longer required in Font Awesome 3.0, but much appreciated:
+ *    "Font Awesome by Dave Gandy - http://fontawesome.io"
+ *
+ *  Author - Dave Gandy
+ *  ------------------------------------------------------------------------------
+ *  Email: dave@fontawesome.io
+ *  Twitter: http://twitter.com/davegandy
+ *  Work: Lead Product Designer @ Kyruus - http://kyruus.com
+ */
+
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('@{fa-font-path}/fontawesome-webfont.eot?v=@{fa-version}');
+  src: url('@{fa-font-path}/fontawesome-webfont.eot?#iefix&v=@{fa-version}') format('embedded-opentype'),
+    url('@{fa-font-path}/fontawesome-webfont.woff?v=@{fa-version}') format('woff'),
+    url('@{fa-font-path}/fontawesome-webfont.ttf?v=@{fa-version}') format('truetype'),
+    url('@{fa-font-path}/fontawesome-webfont.svg?v=@{fa-version}#fontawesomeregular') format('svg');
+//  src: url('@{fa-font-path}/FontAwesome.otf') format('opentype'); // used when developing fonts
+  font-weight: normal;
+  font-style: normal;
+}
+
+@fa-font-path:        "../fonts";
+@fa-css-prefix:       resumecon;
+@fa-version:          "4.0.0";
+
+.@{fa-css-prefix} {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@fa-var-envelope: "\f0e0";
+@fa-var-envelope-o: "\f003";
+@fa-var-globe: "\f0ac";
+@fa-var-phone: "\f095";
+@fa-var-phone-square: "\f098";
+@fa-var-github-square: "\f092";
+@fa-var-check: "\f00c";
+
+.@{fa-css-prefix}-info-circle:before { content: '\f05a'; }
+
+.@{fa-css-prefix}-twitter-square:before { content: '\f081'; }
+.@{fa-css-prefix}-facebook-square:before { content: '\f082'; }
+.@{fa-css-prefix}-pinterest-square:before { content: '\f0d3'; }
+.@{fa-css-prefix}-google-plus-square:before { content: '\f0d4'; }
+.@{fa-css-prefix}-github-square:before { content: @fa-var-github-square; }
+
+.@{fa-css-prefix}-envelope:before { content: @fa-var-envelope; }
+.@{fa-css-prefix}-envelope-o:before { content: @fa-var-envelope-o; }
+.@{fa-css-prefix}-phone:before { content: @fa-var-phone; }
+.@{fa-css-prefix}-phone-square:before { content: @fa-var-phone-square; }
+.@{fa-css-prefix}-globe:before { content: @fa-var-globe; }
+
+.@{fa-css-prefix}-check:before { content: @fa-var-check; }

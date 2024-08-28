@@ -1,0 +1,314 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Resume Page - 1.0\n"
+"POT-Creation-Date: 2013-11-18 17:28-0600\n"
+"PO-Revision-Date: 2013-11-18 17:29-0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: ../inc\n"
+"X-Poedit-SearchPath-1: inc\n"
+
+#: inc/meta.php:19 inc/meta.php:86 inc/meta.php:107 inc/meta.php:126
+#: inc/meta.php:147 inc/meta.php:160 inc/meta.php:198 inc/meta.php:219
+#: inc/meta.php:234 inc/meta.php:255 inc/meta.php:287 inc/meta.php:308
+#: inc/meta.php:329 inc/meta.php:342
+msgid " "
+msgstr ""
+
+#: inc/meta.php:21
+msgid ""
+"\n"
+"\t\t\t\tResume Page is meant to be plug-and-play. Activate Resume Page on "
+"any Wordpress page by toggling the box to your right. Then, just fill out "
+"the fields below.<br />-  To set the avatar, set a Featured Image. It's "
+"designed this way so if the page is linked from social networks the avatar "
+"shows along with the bio. <br />-  To create a gallery, simply create and "
+"insert a Wordpress gallery into the editor above. The order of the ID's "
+"dictate the order of the images in the gallery. <br /><strong>Note:</strong> "
+"Inserting anything else into the editor above won't show, only the gallery.\n"
+"\t\t\t"
+msgstr ""
+
+#: inc/meta.php:30
+msgid "Name"
+msgstr ""
+
+#: inc/meta.php:36
+msgid "Tagline"
+msgstr ""
+
+#: inc/meta.php:42
+msgid "Email"
+msgstr ""
+
+#: inc/meta.php:48
+msgid "Website"
+msgstr ""
+
+#: inc/meta.php:54
+msgid "Phone"
+msgstr ""
+
+#: inc/meta.php:63
+msgid "Bio Social"
+msgstr ""
+
+#: inc/meta.php:68
+msgid "Twitter Username"
+msgstr ""
+
+#: inc/meta.php:74
+msgid "Facebook username"
+msgstr ""
+
+#: inc/meta.php:80
+msgid "Github Username"
+msgstr ""
+
+#: inc/meta.php:89
+msgid ""
+"<span class=\"ba-help-icon\">?</span>If you don't enter any links, then the "
+"social networks just won't show. "
+msgstr ""
+
+#: inc/meta.php:96
+msgid "Objective Section"
+msgstr ""
+
+#: inc/meta.php:101
+msgid "Disable the Objective Section"
+msgstr ""
+
+#: inc/meta.php:110
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will deactivate the "
+"Objective section. This means the fields below for Objective will have no "
+"affect. "
+msgstr ""
+
+#: inc/meta.php:114
+msgid "Objective Title"
+msgstr ""
+
+#: inc/meta.php:120
+msgid "Objective Text"
+msgstr ""
+
+#: inc/meta.php:129
+msgid ""
+"<span class=\"ba-help-icon\">?</span>The Objective Title is the title. By "
+"default it will say <em>Objective</em>. The Objective Text is the actual "
+"displayed objective. "
+msgstr ""
+
+#: inc/meta.php:136
+msgid "Experience Section"
+msgstr ""
+
+#: inc/meta.php:141
+msgid "Disable the Experience Section"
+msgstr ""
+
+#: inc/meta.php:150
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will deactivate the "
+"Experience section. This means the Experience fields below will have no "
+"affect. "
+msgstr ""
+
+#: inc/meta.php:154
+msgid "Experience Title"
+msgstr ""
+
+#: inc/meta.php:163
+msgid ""
+"<span class=\"ba-help-icon\">?</span>By default this will read as "
+"<em>Experience</em>. "
+msgstr ""
+
+#: inc/meta.php:175
+msgid "Company"
+msgstr ""
+
+#: inc/meta.php:180
+msgid "Job Title"
+msgstr ""
+
+#: inc/meta.php:185
+msgid "Job Description"
+msgstr ""
+
+#: inc/meta.php:190
+msgid "Job Dates"
+msgstr ""
+
+#: inc/meta.php:192
+msgid "Enter as <em>Nov 2011 - Mar 2013</em>"
+msgstr ""
+
+#: inc/meta.php:201
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Add different work places with the "
+"\"Add New\" button. Fill out the appropriate fields for Work Title, Company, "
+"Job Description, and Work Dates."
+msgstr ""
+
+#: inc/meta.php:208
+msgid "Skills Section"
+msgstr ""
+
+#: inc/meta.php:213
+msgid "Disable the Skills Section"
+msgstr ""
+
+#: inc/meta.php:222
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will deactivate the "
+"Skills section. This means the Skills fields below will have no affect. "
+msgstr ""
+
+#: inc/meta.php:237
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Generate new skills by clicking the "
+"\"Add New\" button. A skill can be anything like, <em>unicorn wrangler</em>"
+msgstr ""
+
+#: inc/meta.php:244
+msgid "Education Section"
+msgstr ""
+
+#: inc/meta.php:249
+msgid "Disable the Education Section"
+msgstr ""
+
+#: inc/meta.php:258
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will deactivate the "
+"Education section. This means the Education fields below will have no "
+"affect. "
+msgstr ""
+
+#: inc/meta.php:270
+msgid "School Name"
+msgstr ""
+
+#: inc/meta.php:275
+msgid "Studied"
+msgstr ""
+
+#: inc/meta.php:280
+msgid "Small Description"
+msgstr ""
+
+#: inc/meta.php:290
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Enter schools by clicking the \"Add New"
+"\" button below."
+msgstr ""
+
+#: inc/meta.php:297
+msgid "Github Section"
+msgstr ""
+
+#: inc/meta.php:302
+msgid "Disable the Github Section"
+msgstr ""
+
+#: inc/meta.php:311
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will deactivate the "
+"Github setion. This means the Github fields below will have no affect.<br /"
+"><br /> <strong>Tip:</strong> The Github activity is displayed using the "
+"username provided above in Social options. "
+msgstr ""
+
+#: inc/meta.php:318
+msgid "Portfolio Section"
+msgstr ""
+
+#: inc/meta.php:323
+msgid "Disable the Portfolio Section"
+msgstr ""
+
+#: inc/meta.php:332
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will deactivate the "
+"Portfolio portion. This means the Portfolio fields below will have no "
+"affect. "
+msgstr ""
+
+#: inc/meta.php:336
+msgid "Enable Portfolio Lightbox"
+msgstr ""
+
+#: inc/meta.php:345
+msgid ""
+"<span class=\"ba-help-icon\">?</span>Checking this box will enable each "
+"image to open in a lightbox. "
+msgstr ""
+
+#: inc/meta.php:352
+msgid "Design"
+msgstr ""
+
+#: inc/meta.php:357
+msgid "Text Color"
+msgstr ""
+
+#: inc/meta.php:364
+msgid "Accent Color"
+msgstr ""
+
+#: inc/meta.php:371
+msgid "Background Color"
+msgstr ""
+
+#: inc/meta.php:378
+msgid "Container Color"
+msgstr ""
+
+#: inc/meta.php:385
+msgid "Full Screen Background Image"
+msgstr ""
+
+#: inc/meta.php:391
+msgid "Container Opacity"
+msgstr ""
+
+#: inc/meta.php:410
+msgid "Custom CSS"
+msgstr ""
+
+#: inc/meta.php:412
+msgid "Enter any custom CSS changes here."
+msgstr ""
+
+#: inc/meta.php:417
+msgid "Resume Page Options"
+msgstr ""
+
+#: inc/meta.php:423
+msgid "Resume Page"
+msgstr ""
+
+#: inc/meta.php:429
+msgid "Make this page a Resume Page"
+msgstr ""
+
+#: inc/meta.php:436
+msgid "Resume Page Theme"
+msgstr ""
+
+#: inc/meta.php:446
+msgid "Flat"
+msgstr ""
+
+#: inc/meta.php:447
+msgid "Paper Stack"
+msgstr ""
