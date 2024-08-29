@@ -1,3 +1,30 @@
+.wp-resume-builder-tabs-menu {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.wp-resume-builder-tabs-menu li {
+  margin-bottom: -1px;
+}
+
+.wp-resume-builder-tabs-menu li a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  margin-right: 5px;
+}
+
+.wp-resume-builder-tabs-menu li a.ui-tabs-active {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
 .wp-resume-builder-shortcode-info {
   background: #f1f1f1;
   border-left: 4px solid #0073aa;

@@ -57,20 +57,38 @@ class WP_Resume_Builder_Shortcode
     <div class="personal-info">
       <h1><?php echo esc_html($this->options['name']); ?></h1>
       <p class="tagline"><?php echo esc_html($this->options['tagline']); ?></p>
-      <p class="contact-info">
-        <?php echo esc_html($this->options['email']); ?> |
-        <?php echo esc_html($this->options['phone']); ?> |
-        <a href="<?php echo esc_url($this->options['website']); ?>" target="_blank"><?php echo esc_html($this->options['website']); ?></a>
-      </p>
-      <div class="social-links">
-        <?php if (!empty($this->options['twitter'])) : ?>
-          <a href="https://twitter.com/<?php echo esc_attr($this->options['twitter']); ?>" target="_blank">Twitter</a>
+      <div class="contact-info">
+        <?php if (!empty($this->options['email'])) : ?>
+          <a href="mailto:<?php echo esc_attr($this->options['email']); ?>" title="Email">
+            <?php echo $this->get_svg_icon('email'); ?>
+          </a>
         <?php endif; ?>
-        <?php if (!empty($this->options['facebook'])) : ?>
-          <a href="https://facebook.com/<?php echo esc_attr($this->options['facebook']); ?>" target="_blank">Facebook</a>
+        <?php if (!empty($this->options['phone'])) : ?>
+          <a href="tel:<?php echo esc_attr($this->options['phone']); ?>" title="Phone">
+            <?php echo $this->get_svg_icon('phone'); ?>
+          </a>
+        <?php endif; ?>
+        <?php if (!empty($this->options['website'])) : ?>
+          <a href="<?php echo esc_url($this->options['website']); ?>" target="_blank" title="Website">
+            <?php echo $this->get_svg_icon('website'); ?>
+          </a>
+        <?php endif; ?>
+      </div>
+      <div class="social-links">
+        <?php if (!empty($this->options['linkedin'])) : ?>
+          <a href="https://linkedin.com/in/<?php echo esc_attr($this->options['linkedin']); ?>" target="_blank" title="LinkedIn">
+            <?php echo $this->get_svg_icon('linkedin'); ?>
+          </a>
+        <?php endif; ?>
+        <?php if (!empty($this->options['twitter'])) : ?>
+          <a href="https://twitter.com/<?php echo esc_attr($this->options['twitter']); ?>" target="_blank" title="Twitter">
+            <?php echo $this->get_svg_icon('twitter'); ?>
+          </a>
         <?php endif; ?>
         <?php if (!empty($this->options['github'])) : ?>
-          <a href="https://github.com/<?php echo esc_attr($this->options['github']); ?>" target="_blank">GitHub</a>
+          <a href="https://github.com/<?php echo esc_attr($this->options['github']); ?>" target="_blank" title="GitHub">
+            <?php echo $this->get_svg_icon('github'); ?>
+          </a>
         <?php endif; ?>
       </div>
     </div>
@@ -113,7 +131,7 @@ class WP_Resume_Builder_Shortcode
   {
   ?>
     <div class="skills-section">
-      <h2>Skills</h2>
+      <h2><?php echo esc_html($this->options['skills_title'] ?? 'Skills'); ?></h2>
       <ul>
         <?php
         if (isset($this->options['skills']) && is_array($this->options['skills'])) {
@@ -131,7 +149,7 @@ class WP_Resume_Builder_Shortcode
   {
   ?>
     <div class="education-section">
-      <h2>Education</h2>
+      <h2><?php echo esc_html($this->options['education_title'] ?? 'Education'); ?></h2>
       <?php
       if (isset($this->options['education_entries']) && is_array($this->options['education_entries'])) {
         foreach ($this->options['education_entries'] as $entry) {
@@ -171,5 +189,14 @@ class WP_Resume_Builder_Shortcode
       <p>Portfolio implementation goes here.</p>
     </div>
 <?php
+  }
+
+  private function get_svg_icon($icon_name)
+  {
+    $icon_path = WP_RESUME_BUILDER_PLUGIN_DIR . 'assets/icons/' . $icon_name . '.svg';
+    if (file_exists($icon_path)) {
+      return file_get_contents($icon_path);
+    }
+    return '';
   }
 }

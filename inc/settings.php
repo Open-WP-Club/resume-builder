@@ -12,20 +12,18 @@ class WP_Resume_Builder_Settings
 
   public function add_plugin_page()
   {
-    add_menu_page(
+    add_options_page(
       'WP Resume Builder',
       'Resume Builder',
       'manage_options',
       'wp-resume-builder',
-      array($this, 'create_admin_page'),
-      'dashicons-id-alt',
-      100
+      array($this, 'create_admin_page')
     );
   }
 
   public function enqueue_admin_scripts($hook)
   {
-    if ('toplevel_page_wp-resume-builder' !== $hook) {
+    if ('settings_page_wp-resume-builder' !== $hook) {
       return;
     }
     wp_enqueue_style('wp-color-picker');
