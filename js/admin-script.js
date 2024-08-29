@@ -1,7 +1,4 @@
 jQuery(document).ready(function ($) {
-  // Initialize tabs
-  $("#wp-resume-builder-tabs").tabs();
-
   // Initialize color pickers
   $(".wp-resume-builder-color-picker").wpColorPicker();
 

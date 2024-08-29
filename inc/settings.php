@@ -2,6 +2,7 @@
 class WP_Resume_Builder_Settings
 {
   private $options;
+  private $active_tab;
 
   public function init()
   {
@@ -28,14 +29,14 @@ class WP_Resume_Builder_Settings
     }
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_script('wp-color-picker');
-    wp_enqueue_script('jquery-ui-tabs');
     wp_enqueue_style('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), '1.0.0');
-    wp_enqueue_script('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../js/admin-script.js', array('jquery', 'jquery-ui-tabs', 'wp-color-picker'), '1.0.0', true);
+    wp_enqueue_script('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../js/admin-script.js', array('jquery', 'wp-color-picker'), '1.0.0', true);
   }
 
   public function create_admin_page()
   {
     $this->options = get_option('wp_resume_builder_options');
+    $this->active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'personal';
 ?>
     <div class="wrap">
       <h1>WP Resume Builder Settings</h1>
@@ -44,42 +45,47 @@ class WP_Resume_Builder_Settings
         <p>Use the following shortcode to display your resume on any page or post:</p>
         <code>[wp_resume]</code>
       </div>
+      <h2 class="nav-tab-wrapper">
+        <a href="?page=wp-resume-builder&tab=personal" class="nav-tab <?php echo $this->active_tab == 'personal' ? 'nav-tab-active' : ''; ?>">Personal Info</a>
+        <a href="?page=wp-resume-builder&tab=objective" class="nav-tab <?php echo $this->active_tab == 'objective' ? 'nav-tab-active' : ''; ?>">Objective</a>
+        <a href="?page=wp-resume-builder&tab=experience" class="nav-tab <?php echo $this->active_tab == 'experience' ? 'nav-tab-active' : ''; ?>">Experience</a>
+        <a href="?page=wp-resume-builder&tab=education" class="nav-tab <?php echo $this->active_tab == 'education' ? 'nav-tab-active' : ''; ?>">Education</a>
+        <a href="?page=wp-resume-builder&tab=skills" class="nav-tab <?php echo $this->active_tab == 'skills' ? 'nav-tab-active' : ''; ?>">Skills</a>
+        <a href="?page=wp-resume-builder&tab=design" class="nav-tab <?php echo $this->active_tab == 'design' ? 'nav-tab-active' : ''; ?>">Design</a>
+      </h2>
       <form method="post" action="options.php">
         <?php
         settings_fields('wp_resume_builder_option_group');
+        $this->render_active_tab();
+        submit_button();
         ?>
-        <div id="wp-resume-builder-tabs">
-          <ul>
-            <li><a href="#tab-personal">Personal Info</a></li>
-            <li><a href="#tab-objective">Objective</a></li>
-            <li><a href="#tab-experience">Experience</a></li>
-            <li><a href="#tab-education">Education</a></li>
-            <li><a href="#tab-skills">Skills</a></li>
-            <li><a href="#tab-design">Design</a></li>
-          </ul>
-          <div id="tab-personal">
-            <?php $this->render_personal_info_fields(); ?>
-          </div>
-          <div id="tab-objective">
-            <?php $this->render_objective_fields(); ?>
-          </div>
-          <div id="tab-experience">
-            <?php $this->render_experience_fields(); ?>
-          </div>
-          <div id="tab-education">
-            <?php $this->render_education_fields(); ?>
-          </div>
-          <div id="tab-skills">
-            <?php $this->render_skills_fields(); ?>
-          </div>
-          <div id="tab-design">
-            <?php $this->render_design_fields(); ?>
-          </div>
-        </div>
-        <?php submit_button(); ?>
       </form>
     </div>
 <?php
+  }
+
+  private function render_active_tab()
+  {
+    switch ($this->active_tab) {
+      case 'personal':
+        $this->render_personal_info_fields();
+        break;
+      case 'objective':
+        $this->render_objective_fields();
+        break;
+      case 'experience':
+        $this->render_experience_fields();
+        break;
+      case 'education':
+        $this->render_education_fields();
+        break;
+      case 'skills':
+        $this->render_skills_fields();
+        break;
+      case 'design':
+        $this->render_design_fields();
+        break;
+    }
   }
 
   private function render_personal_info_fields()
