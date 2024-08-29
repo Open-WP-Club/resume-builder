@@ -7,6 +7,7 @@ class WP_Resume_Builder_Settings
   {
     add_action('admin_menu', array($this, 'add_plugin_page'));
     add_action('admin_init', array($this, 'page_init'));
+    add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
   }
 
   public function add_plugin_page()
@@ -22,21 +23,227 @@ class WP_Resume_Builder_Settings
     );
   }
 
+  public function enqueue_admin_scripts($hook)
+  {
+    if ('toplevel_page_wp-resume-builder' !== $hook) {
+      return;
+    }
+    wp_enqueue_style('wp-color-picker');
+    wp_enqueue_script('wp-color-picker');
+    wp_enqueue_script('jquery-ui-tabs');
+    wp_enqueue_style('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), '1.0.0');
+    wp_enqueue_script('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../js/admin-script.js', array('jquery', 'jquery-ui-tabs', 'wp-color-picker'), '1.0.0', true);
+  }
+
   public function create_admin_page()
   {
     $this->options = get_option('wp_resume_builder_options');
 ?>
     <div class="wrap">
       <h1>WP Resume Builder Settings</h1>
+      <div class="wp-resume-builder-shortcode-info">
+        <h2>Shortcode</h2>
+        <p>Use the following shortcode to display your resume on any page or post:</p>
+        <code>[wp_resume]</code>
+      </div>
       <form method="post" action="options.php">
         <?php
         settings_fields('wp_resume_builder_option_group');
-        do_settings_sections('wp-resume-builder-admin');
-        submit_button();
         ?>
+        <div id="wp-resume-builder-tabs">
+          <ul>
+            <li><a href="#tab-personal">Personal Info</a></li>
+            <li><a href="#tab-objective">Objective</a></li>
+            <li><a href="#tab-experience">Experience</a></li>
+            <li><a href="#tab-education">Education</a></li>
+            <li><a href="#tab-skills">Skills</a></li>
+            <li><a href="#tab-design">Design</a></li>
+          </ul>
+          <div id="tab-personal">
+            <?php $this->render_personal_info_fields(); ?>
+          </div>
+          <div id="tab-objective">
+            <?php $this->render_objective_fields(); ?>
+          </div>
+          <div id="tab-experience">
+            <?php $this->render_experience_fields(); ?>
+          </div>
+          <div id="tab-education">
+            <?php $this->render_education_fields(); ?>
+          </div>
+          <div id="tab-skills">
+            <?php $this->render_skills_fields(); ?>
+          </div>
+          <div id="tab-design">
+            <?php $this->render_design_fields(); ?>
+          </div>
+        </div>
+        <?php submit_button(); ?>
       </form>
     </div>
-  <?php
+<?php
+  }
+
+  private function render_personal_info_fields()
+  {
+    $fields = array(
+      'name' => 'Name',
+      'tagline' => 'Tagline',
+      'email' => 'Email',
+      'phone' => 'Phone',
+      'website' => 'Website',
+      'linkedin' => 'LinkedIn',
+      'twitter' => 'Twitter',
+      'github' => 'GitHub'
+    );
+
+    foreach ($fields as $field => $label) {
+      $this->render_text_field($field, $label);
+    }
+  }
+
+  private function render_objective_fields()
+  {
+    $this->render_checkbox_field('disable_objective', 'Disable Objective Section');
+    $this->render_text_field('objective_title', 'Objective Title');
+    $this->render_textarea_field('objective_text', 'Objective Text');
+  }
+
+  private function render_experience_fields()
+  {
+    $this->render_checkbox_field('disable_experience', 'Disable Experience Section');
+    $this->render_text_field('experience_title', 'Experience Title');
+    $this->render_repeater_field('experience_entries', 'Experience Entries', array(
+      'title' => 'Job Title',
+      'company' => 'Company',
+      'dates' => 'Dates',
+      'description' => 'Description'
+    ));
+  }
+
+  private function render_education_fields()
+  {
+    $this->render_checkbox_field('disable_education', 'Disable Education Section');
+    $this->render_text_field('education_title', 'Education Title');
+    $this->render_repeater_field('education_entries', 'Education Entries', array(
+      'degree' => 'Degree',
+      'school' => 'School',
+      'dates' => 'Dates',
+      'description' => 'Description'
+    ));
+  }
+
+  private function render_skills_fields()
+  {
+    $this->render_checkbox_field('disable_skills', 'Disable Skills Section');
+    $this->render_text_field('skills_title', 'Skills Title');
+    $this->render_textarea_field('skills', 'Skills (one per line)');
+  }
+
+  private function render_design_fields()
+  {
+    $this->render_color_field('primary_color', 'Primary Color');
+    $this->render_color_field('secondary_color', 'Secondary Color');
+    $this->render_color_field('text_color', 'Text Color');
+    $this->render_color_field('background_color', 'Background Color');
+    $this->render_select_field('font_family', 'Font Family', array(
+      'Arial, sans-serif' => 'Arial',
+      'Helvetica, sans-serif' => 'Helvetica',
+      'Georgia, serif' => 'Georgia',
+      'Times New Roman, serif' => 'Times New Roman',
+      'Courier New, monospace' => 'Courier New'
+    ));
+  }
+
+  private function render_text_field($field, $label)
+  {
+    $value = isset($this->options[$field]) ? esc_attr($this->options[$field]) : '';
+    echo "<div class='wp-resume-builder-field'>";
+    echo "<label for='$field'>$label</label>";
+    echo "<input type='text' id='$field' name='wp_resume_builder_options[$field]' value='$value' />";
+    echo "</div>";
+  }
+
+  private function render_textarea_field($field, $label)
+  {
+    $value = isset($this->options[$field]) ? esc_textarea($this->options[$field]) : '';
+    echo "<div class='wp-resume-builder-field'>";
+    echo "<label for='$field'>$label</label>";
+    echo "<textarea id='$field' name='wp_resume_builder_options[$field]'>$value</textarea>";
+    echo "</div>";
+  }
+
+  private function render_checkbox_field($field, $label)
+  {
+    $checked = isset($this->options[$field]) && $this->options[$field] ? 'checked' : '';
+    echo "<div class='wp-resume-builder-field'>";
+    echo "<label for='$field'>";
+    echo "<input type='checkbox' id='$field' name='wp_resume_builder_options[$field]' value='1' $checked />";
+    echo " $label</label>";
+    echo "</div>";
+  }
+
+  private function render_color_field($field, $label)
+  {
+    $value = isset($this->options[$field]) ? esc_attr($this->options[$field]) : '';
+    echo "<div class='wp-resume-builder-field'>";
+    echo "<label for='$field'>$label</label>";
+    echo "<input type='text' id='$field' name='wp_resume_builder_options[$field]' value='$value' class='wp-resume-builder-color-picker' />";
+    echo "</div>";
+  }
+
+  private function render_select_field($field, $label, $options)
+  {
+    $value = isset($this->options[$field]) ? esc_attr($this->options[$field]) : '';
+    echo "<div class='wp-resume-builder-field'>";
+    echo "<label for='$field'>$label</label>";
+    echo "<select id='$field' name='wp_resume_builder_options[$field]'>";
+    foreach ($options as $option_value => $option_label) {
+      $selected = $value === $option_value ? 'selected' : '';
+      echo "<option value='$option_value' $selected>$option_label</option>";
+    }
+    echo "</select>";
+    echo "</div>";
+  }
+
+  private function render_repeater_field($field, $label, $sub_fields)
+  {
+    echo "<div class='wp-resume-builder-field wp-resume-builder-repeater' data-field='$field'>";
+    echo "<label>$label</label>";
+    echo "<div class='wp-resume-builder-repeater-items'>";
+
+    if (isset($this->options[$field]) && is_array($this->options[$field])) {
+      foreach ($this->options[$field] as $index => $item) {
+        $this->render_repeater_item($field, $sub_fields, $index, $item);
+      }
+    }
+
+    echo "</div>";
+    echo "<button type='button' class='wp-resume-builder-add-item button'>Add Item</button>";
+    echo "</div>";
+
+    // Template for new items
+    echo "<script type='text/template' id='tmpl-wp-resume-builder-$field-item'>";
+    $this->render_repeater_item($field, $sub_fields, '{{data.index}}');
+    echo "</script>";
+  }
+
+  private function render_repeater_item($field, $sub_fields, $index, $item = array())
+  {
+    echo "<div class='wp-resume-builder-repeater-item'>";
+    foreach ($sub_fields as $sub_field => $sub_label) {
+      $value = isset($item[$sub_field]) ? esc_attr($item[$sub_field]) : '';
+      echo "<div class='wp-resume-builder-sub-field'>";
+      echo "<label for='{$field}_{$index}_{$sub_field}'>$sub_label</label>";
+      if ($sub_field === 'description') {
+        echo "<textarea id='{$field}_{$index}_{$sub_field}' name='wp_resume_builder_options[$field][$index][$sub_field]'>$value</textarea>";
+      } else {
+        echo "<input type='text' id='{$field}_{$index}_{$sub_field}' name='wp_resume_builder_options[$field][$index][$sub_field]' value='$value' />";
+      }
+      echo "</div>";
+    }
+    echo "<button type='button' class='wp-resume-builder-remove-item button'>Remove</button>";
+    echo "</div>";
   }
 
   public function page_init()
@@ -46,129 +253,6 @@ class WP_Resume_Builder_Settings
       'wp_resume_builder_options',
       array($this, 'sanitize')
     );
-
-    // Personal Information
-    add_settings_section(
-      'wp_resume_builder_personal_info',
-      'Personal Information',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    $personal_fields = array(
-      'name' => 'Name',
-      'tagline' => 'Tagline',
-      'email' => 'Email',
-      'website' => 'Website',
-      'phone' => 'Phone'
-    );
-
-    foreach ($personal_fields as $field => $label) {
-      add_settings_field(
-        $field,
-        $label,
-        array($this, 'text_field_callback'),
-        'wp-resume-builder-admin',
-        'wp_resume_builder_personal_info',
-        array('field' => $field)
-      );
-    }
-
-    // Social Media
-    add_settings_section(
-      'wp_resume_builder_social_media',
-      'Social Media',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    $social_fields = array(
-      'twitter' => 'Twitter Username',
-      'facebook' => 'Facebook Username',
-      'github' => 'Github Username'
-    );
-
-    foreach ($social_fields as $field => $label) {
-      add_settings_field(
-        $field,
-        $label,
-        array($this, 'text_field_callback'),
-        'wp-resume-builder-admin',
-        'wp_resume_builder_social_media',
-        array('field' => $field)
-      );
-    }
-
-    // Objective Section
-    add_settings_section(
-      'wp_resume_builder_objective',
-      'Objective Section',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'disable_objective',
-      'Disable Objective Section',
-      array($this, 'checkbox_field_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_objective',
-      array('field' => 'disable_objective')
-    );
-
-    add_settings_field(
-      'objective_title',
-      'Objective Title',
-      array($this, 'text_field_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_objective',
-      array('field' => 'objective_title')
-    );
-
-    add_settings_field(
-      'objective_text',
-      'Objective Text',
-      array($this, 'textarea_field_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_objective',
-      array('field' => 'objective_text')
-    );
-
-    // Experience Section
-    add_settings_section(
-      'wp_resume_builder_experience',
-      'Experience Section',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'disable_experience',
-      'Disable Experience Section',
-      array($this, 'checkbox_field_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_experience',
-      array('field' => 'disable_experience')
-    );
-
-    add_settings_field(
-      'experience_title',
-      'Experience Title',
-      array($this, 'text_field_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_experience',
-      array('field' => 'experience_title')
-    );
-
-    add_settings_field(
-      'experience_entries',
-      'Experience Entries',
-      array($this, 'experience_entries_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_experience'
-    );
-
-    // Add more sections (Skills, Education, etc.) here...
   }
 
   public function sanitize($input)
@@ -184,100 +268,5 @@ class WP_Resume_Builder_Settings
     }
 
     return $new_input;
-  }
-
-  public function print_section_info()
-  {
-    print 'Enter your settings below:';
-  }
-
-  public function text_field_callback($args)
-  {
-    $field = $args['field'];
-    printf(
-      '<input type="text" id="%s" name="wp_resume_builder_options[%s]" value="%s" />',
-      esc_attr($field),
-      esc_attr($field),
-      isset($this->options[$field]) ? esc_attr($this->options[$field]) : ''
-    );
-  }
-
-  public function textarea_field_callback($args)
-  {
-    $field = $args['field'];
-    printf(
-      '<textarea id="%s" name="wp_resume_builder_options[%s]">%s</textarea>',
-      esc_attr($field),
-      esc_attr($field),
-      isset($this->options[$field]) ? esc_textarea($this->options[$field]) : ''
-    );
-  }
-
-  public function checkbox_field_callback($args)
-  {
-    $field = $args['field'];
-    printf(
-      '<input type="checkbox" id="%s" name="wp_resume_builder_options[%s]" value="1" %s />',
-      esc_attr($field),
-      esc_attr($field),
-      (isset($this->options[$field]) && $this->options[$field] == 1) ? 'checked' : ''
-    );
-  }
-
-  public function experience_entries_callback()
-  {
-    echo '<div id="experience-entries">';
-    if (isset($this->options['experience_entries']) && is_array($this->options['experience_entries'])) {
-      foreach ($this->options['experience_entries'] as $key => $entry) {
-        $this->render_experience_entry($key, $entry);
-      }
-    }
-    echo '</div>';
-    echo '<button type="button" id="add-experience">Add New</button>';
-
-    // Add JavaScript to handle dynamic addition and removal of experience entries
-    $this->add_experience_entry_js();
-  }
-
-  private function render_experience_entry($key, $entry = array())
-  {
-    $title = isset($entry['title']) ? esc_attr($entry['title']) : '';
-    $company = isset($entry['company']) ? esc_attr($entry['company']) : '';
-    $description = isset($entry['description']) ? esc_textarea($entry['description']) : '';
-    $dates = isset($entry['dates']) ? esc_attr($entry['dates']) : '';
-
-    echo '<div class="experience-entry">';
-    echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][title]" value="' . $title . '" placeholder="Work Title" />';
-    echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][company]" value="' . $company . '" placeholder="Company" />';
-    echo '<textarea name="wp_resume_builder_options[experience_entries][' . $key . '][description]" placeholder="Job Description">' . $description . '</textarea>';
-    echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][dates]" value="' . $dates . '" placeholder="Work Dates" />';
-    echo '<button type="button" class="remove-experience">Remove</button>';
-    echo '</div>';
-  }
-
-  private function add_experience_entry_js()
-  {
-  ?>
-    <script type="text/javascript">
-      jQuery(document).ready(function($) {
-        var experienceCount = $('.experience-entry').length;
-
-        $('#add-experience').on('click', function() {
-          var newEntry = $('<div class="experience-entry"></div>');
-          newEntry.append('<input type="text" name="wp_resume_builder_options[experience_entries][' + experienceCount + '][title]" placeholder="Work Title" />');
-          newEntry.append('<input type="text" name="wp_resume_builder_options[experience_entries][' + experienceCount + '][company]" placeholder="Company" />');
-          newEntry.append('<textarea name="wp_resume_builder_options[experience_entries][' + experienceCount + '][description]" placeholder="Job Description"></textarea>');
-          newEntry.append('<input type="text" name="wp_resume_builder_options[experience_entries][' + experienceCount + '][dates]" placeholder="Work Dates" />');
-          newEntry.append('<button type="button" class="remove-experience">Remove</button>');
-          $('#experience-entries').append(newEntry);
-          experienceCount++;
-        });
-
-        $(document).on('click', '.remove-experience', function() {
-          $(this).parent('.experience-entry').remove();
-        });
-      });
-    </script>
-<?php
   }
 }

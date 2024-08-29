@@ -1,0 +1,53 @@
+.wp-resume-builder-shortcode-info {
+  background: #f1f1f1;
+  border-left: 4px solid #0073aa;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.wp-resume-builder-shortcode-info code {
+  display: inline-block;
+  padding: 5px 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+#wp-resume-builder-tabs {
+  margin-top: 20px;
+}
+
+.wp-resume-builder-field {
+  margin-bottom: 15px;
+}
+
+.wp-resume-builder-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.wp-resume-builder-field input[type="text"],
+.wp-resume-builder-field textarea,
+.wp-resume-builder-field select {
+  width: 100%;
+  max-width: 400px;
+}
+
+.wp-resume-builder-repeater-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.wp-resume-builder-sub-field {
+  margin-bottom: 10px;
+}
+
+.wp-resume-builder-remove-item {
+  margin-top: 10px;
+}
+
+.wp-resume-builder-add-item {
+  margin-top: 10px;
+}
