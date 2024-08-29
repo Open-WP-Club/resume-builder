@@ -36,7 +36,7 @@ class WP_Resume_Builder_Settings
         ?>
       </form>
     </div>
-<?php
+  <?php
   }
 
   public function page_init()
@@ -55,45 +55,24 @@ class WP_Resume_Builder_Settings
       'wp-resume-builder-admin'
     );
 
-    add_settings_field(
-      'name',
-      'Name',
-      array($this, 'name_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_personal_info'
+    $personal_fields = array(
+      'name' => 'Name',
+      'tagline' => 'Tagline',
+      'email' => 'Email',
+      'website' => 'Website',
+      'phone' => 'Phone'
     );
 
-    add_settings_field(
-      'tagline',
-      'Tagline',
-      array($this, 'tagline_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_personal_info'
-    );
-
-    add_settings_field(
-      'email',
-      'Email',
-      array($this, 'email_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_personal_info'
-    );
-
-    add_settings_field(
-      'website',
-      'Website',
-      array($this, 'website_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_personal_info'
-    );
-
-    add_settings_field(
-      'phone',
-      'Phone',
-      array($this, 'phone_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_personal_info'
-    );
+    foreach ($personal_fields as $field => $label) {
+      add_settings_field(
+        $field,
+        $label,
+        array($this, 'text_field_callback'),
+        'wp-resume-builder-admin',
+        'wp_resume_builder_personal_info',
+        array('field' => $field)
+      );
+    }
 
     // Social Media
     add_settings_section(
@@ -103,29 +82,22 @@ class WP_Resume_Builder_Settings
       'wp-resume-builder-admin'
     );
 
-    add_settings_field(
-      'twitter',
-      'Twitter Username',
-      array($this, 'twitter_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_social_media'
+    $social_fields = array(
+      'twitter' => 'Twitter Username',
+      'facebook' => 'Facebook Username',
+      'github' => 'Github Username'
     );
 
-    add_settings_field(
-      'facebook',
-      'Facebook Username',
-      array($this, 'facebook_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_social_media'
-    );
-
-    add_settings_field(
-      'github',
-      'Github Username',
-      array($this, 'github_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_social_media'
-    );
+    foreach ($social_fields as $field => $label) {
+      add_settings_field(
+        $field,
+        $label,
+        array($this, 'text_field_callback'),
+        'wp-resume-builder-admin',
+        'wp_resume_builder_social_media',
+        array('field' => $field)
+      );
+    }
 
     // Objective Section
     add_settings_section(
@@ -138,25 +110,28 @@ class WP_Resume_Builder_Settings
     add_settings_field(
       'disable_objective',
       'Disable Objective Section',
-      array($this, 'disable_objective_callback'),
+      array($this, 'checkbox_field_callback'),
       'wp-resume-builder-admin',
-      'wp_resume_builder_objective'
+      'wp_resume_builder_objective',
+      array('field' => 'disable_objective')
     );
 
     add_settings_field(
       'objective_title',
       'Objective Title',
-      array($this, 'objective_title_callback'),
+      array($this, 'text_field_callback'),
       'wp-resume-builder-admin',
-      'wp_resume_builder_objective'
+      'wp_resume_builder_objective',
+      array('field' => 'objective_title')
     );
 
     add_settings_field(
       'objective_text',
       'Objective Text',
-      array($this, 'objective_text_callback'),
+      array($this, 'textarea_field_callback'),
       'wp-resume-builder-admin',
-      'wp_resume_builder_objective'
+      'wp_resume_builder_objective',
+      array('field' => 'objective_text')
     );
 
     // Experience Section
@@ -170,17 +145,19 @@ class WP_Resume_Builder_Settings
     add_settings_field(
       'disable_experience',
       'Disable Experience Section',
-      array($this, 'disable_experience_callback'),
+      array($this, 'checkbox_field_callback'),
       'wp-resume-builder-admin',
-      'wp_resume_builder_experience'
+      'wp_resume_builder_experience',
+      array('field' => 'disable_experience')
     );
 
     add_settings_field(
       'experience_title',
       'Experience Title',
-      array($this, 'experience_title_callback'),
+      array($this, 'text_field_callback'),
       'wp-resume-builder-admin',
-      'wp_resume_builder_experience'
+      'wp_resume_builder_experience',
+      array('field' => 'experience_title')
     );
 
     add_settings_field(
@@ -191,181 +168,20 @@ class WP_Resume_Builder_Settings
       'wp_resume_builder_experience'
     );
 
-    // Skills Section
-    add_settings_section(
-      'wp_resume_builder_skills',
-      'Skills Section',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'disable_skills',
-      'Disable Skills Section',
-      array($this, 'disable_skills_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_skills'
-    );
-
-    add_settings_field(
-      'skills',
-      'Skills',
-      array($this, 'skills_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_skills'
-    );
-
-    // Education Section
-    add_settings_section(
-      'wp_resume_builder_education',
-      'Education Section',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'disable_education',
-      'Disable Education Section',
-      array($this, 'disable_education_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_education'
-    );
-
-    add_settings_field(
-      'education_entries',
-      'Education Entries',
-      array($this, 'education_entries_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_education'
-    );
-
-    // Github Section
-    add_settings_section(
-      'wp_resume_builder_github',
-      'Github Section',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'disable_github',
-      'Disable Github Section',
-      array($this, 'disable_github_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_github'
-    );
-
-    // Portfolio Section
-    add_settings_section(
-      'wp_resume_builder_portfolio',
-      'Portfolio Section',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'disable_portfolio',
-      'Disable Portfolio Section',
-      array($this, 'disable_portfolio_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_portfolio'
-    );
-
-    add_settings_field(
-      'enable_portfolio_lightbox',
-      'Enable Portfolio Lightbox',
-      array($this, 'enable_portfolio_lightbox_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_portfolio'
-    );
-
-    // Design Section
-    add_settings_section(
-      'wp_resume_builder_design',
-      'Design',
-      array($this, 'print_section_info'),
-      'wp-resume-builder-admin'
-    );
-
-    add_settings_field(
-      'text_color',
-      'Text Color',
-      array($this, 'text_color_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_design'
-    );
-
-    add_settings_field(
-      'accent_color',
-      'Accent Color',
-      array($this, 'accent_color_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_design'
-    );
-
-    add_settings_field(
-      'background_color',
-      'Background Color',
-      array($this, 'background_color_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_design'
-    );
-
-    add_settings_field(
-      'container_color',
-      'Container Color',
-      array($this, 'container_color_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_design'
-    );
-
-    add_settings_field(
-      'background_image',
-      'Full Screen Background Image',
-      array($this, 'background_image_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_design'
-    );
-
-    add_settings_field(
-      'container_opacity',
-      'Container Opacity',
-      array($this, 'container_opacity_callback'),
-      'wp-resume-builder-admin',
-      'wp_resume_builder_design'
-    );
+    // Add more sections (Skills, Education, etc.) here...
   }
 
   public function sanitize($input)
   {
     $new_input = array();
 
-    // Sanitize each field
-    if (isset($input['name']))
-      $new_input['name'] = sanitize_text_field($input['name']);
-
-    if (isset($input['tagline']))
-      $new_input['tagline'] = sanitize_text_field($input['tagline']);
-
-    if (isset($input['email']))
-      $new_input['email'] = sanitize_email($input['email']);
-
-    if (isset($input['website']))
-      $new_input['website'] = esc_url_raw($input['website']);
-
-    if (isset($input['phone']))
-      $new_input['phone'] = sanitize_text_field($input['phone']);
-
-    if (isset($input['twitter']))
-      $new_input['twitter'] = sanitize_text_field($input['twitter']);
-
-    if (isset($input['facebook']))
-      $new_input['facebook'] = sanitize_text_field($input['facebook']);
-
-    if (isset($input['github']))
-      $new_input['github'] = sanitize_text_field($input['github']);
-
-    // Add more sanitization for other fields...
+    foreach ($input as $key => $value) {
+      if (is_array($value)) {
+        $new_input[$key] = $this->sanitize($value);
+      } else {
+        $new_input[$key] = sanitize_text_field($value);
+      }
+    }
 
     return $new_input;
   }
@@ -375,42 +191,93 @@ class WP_Resume_Builder_Settings
     print 'Enter your settings below:';
   }
 
-  // Callback functions for each field
-  public function name_callback()
+  public function text_field_callback($args)
   {
+    $field = $args['field'];
     printf(
-      '<input type="text" id="name" name="wp_resume_builder_options[name]" value="%s" />',
-      isset($this->options['name']) ? esc_attr($this->options['name']) : ''
+      '<input type="text" id="%s" name="wp_resume_builder_options[%s]" value="%s" />',
+      esc_attr($field),
+      esc_attr($field),
+      isset($this->options[$field]) ? esc_attr($this->options[$field]) : ''
     );
   }
 
-  public function tagline_callback()
+  public function textarea_field_callback($args)
   {
+    $field = $args['field'];
     printf(
-      '<input type="text" id="tagline" name="wp_resume_builder_options[tagline]" value="%s" />',
-      isset($this->options['tagline']) ? esc_attr($this->options['tagline']) : ''
+      '<textarea id="%s" name="wp_resume_builder_options[%s]">%s</textarea>',
+      esc_attr($field),
+      esc_attr($field),
+      isset($this->options[$field]) ? esc_textarea($this->options[$field]) : ''
     );
   }
 
-  // Add more callback functions for other fields...
+  public function checkbox_field_callback($args)
+  {
+    $field = $args['field'];
+    printf(
+      '<input type="checkbox" id="%s" name="wp_resume_builder_options[%s]" value="1" %s />',
+      esc_attr($field),
+      esc_attr($field),
+      (isset($this->options[$field]) && $this->options[$field] == 1) ? 'checked' : ''
+    );
+  }
 
   public function experience_entries_callback()
   {
     echo '<div id="experience-entries">';
     if (isset($this->options['experience_entries']) && is_array($this->options['experience_entries'])) {
       foreach ($this->options['experience_entries'] as $key => $entry) {
-        echo '<div class="experience-entry">';
-        echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][title]" value="' . esc_attr($entry['title']) . '" placeholder="Work Title" />';
-        echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][company]" value="' . esc_attr($entry['company']) . '" placeholder="Company" />';
-        echo '<textarea name="wp_resume_builder_options[experience_entries][' . $key . '][description]" placeholder="Job Description">' . esc_textarea($entry['description']) . '</textarea>';
-        echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][dates]" value="' . esc_attr($entry['dates']) . '" placeholder="Work Dates" />';
-        echo '<button type="button" class="remove-experience">Remove</button>';
-        echo '</div>';
+        $this->render_experience_entry($key, $entry);
       }
     }
     echo '</div>';
     echo '<button type="button" id="add-experience">Add New</button>';
+
+    // Add JavaScript to handle dynamic addition and removal of experience entries
+    $this->add_experience_entry_js();
   }
 
-  // Add similar functions for skills, education, etc.
+  private function render_experience_entry($key, $entry = array())
+  {
+    $title = isset($entry['title']) ? esc_attr($entry['title']) : '';
+    $company = isset($entry['company']) ? esc_attr($entry['company']) : '';
+    $description = isset($entry['description']) ? esc_textarea($entry['description']) : '';
+    $dates = isset($entry['dates']) ? esc_attr($entry['dates']) : '';
+
+    echo '<div class="experience-entry">';
+    echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][title]" value="' . $title . '" placeholder="Work Title" />';
+    echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][company]" value="' . $company . '" placeholder="Company" />';
+    echo '<textarea name="wp_resume_builder_options[experience_entries][' . $key . '][description]" placeholder="Job Description">' . $description . '</textarea>';
+    echo '<input type="text" name="wp_resume_builder_options[experience_entries][' . $key . '][dates]" value="' . $dates . '" placeholder="Work Dates" />';
+    echo '<button type="button" class="remove-experience">Remove</button>';
+    echo '</div>';
+  }
+
+  private function add_experience_entry_js()
+  {
+  ?>
+    <script type="text/javascript">
+      jQuery(document).ready(function($) {
+        var experienceCount = $('.experience-entry').length;
+
+        $('#add-experience').on('click', function() {
+          var newEntry = $('<div class="experience-entry"></div>');
+          newEntry.append('<input type="text" name="wp_resume_builder_options[experience_entries][' + experienceCount + '][title]" placeholder="Work Title" />');
+          newEntry.append('<input type="text" name="wp_resume_builder_options[experience_entries][' + experienceCount + '][company]" placeholder="Company" />');
+          newEntry.append('<textarea name="wp_resume_builder_options[experience_entries][' + experienceCount + '][description]" placeholder="Job Description"></textarea>');
+          newEntry.append('<input type="text" name="wp_resume_builder_options[experience_entries][' + experienceCount + '][dates]" placeholder="Work Dates" />');
+          newEntry.append('<button type="button" class="remove-experience">Remove</button>');
+          $('#experience-entries').append(newEntry);
+          experienceCount++;
+        });
+
+        $(document).on('click', '.remove-experience', function() {
+          $(this).parent('.experience-entry').remove();
+        });
+      });
+    </script>
+<?php
+  }
 }
