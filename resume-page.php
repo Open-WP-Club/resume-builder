@@ -1,13 +1,16 @@
 <?php
 
 /**
- * Plugin Name: WP Resume Builder
- * Plugin URI: http://example.com/wp-resume-builder
- * Description: A plugin to create and display a resume using a shortcode
- * Version: 1.0
- * Author: Your Name
- * Author URI: http://example.com
- * License: GPL2
+ * Plugin Name:             WP Resume Builder
+ * Plugin URI:              https://github.com/Open-WP-Club/resume-builder
+ * Description:             A plugin to create and display a resume using a shortcode
+ * Version:                 0.0.1
+ * Author:                  Gabriel Kanev
+ * Author URI:              https://gkanev.com
+ * License:                 GPL-2.0 License
+ * Requires at least:       6.0
+ * Requires PHP:            7.4
+ * Tested up to:            6.6.2
  */
 
 // Exit if accessed directly
@@ -16,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WP_RESUME_BUILDER_VERSION', '1.0');
+define('WP_RESUME_BUILDER_VERSION', '0.0.1');
 define('WP_RESUME_BUILDER_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_RESUME_BUILDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 

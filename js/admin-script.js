@@ -10,12 +10,17 @@ jQuery(document).ready(function ($) {
     var $repeater = $(this);
     var field = $repeater.data("field");
     var $itemsContainer = $repeater.find(".wp-resume-builder-repeater-items");
-    var template = wp.template("wp-resume-builder-" + field + "-item");
+    var $template = $("#tmpl-wp-resume-builder-" + field + "-item");
     var index = $itemsContainer.children().length;
 
-    $repeater.on("click", ".wp-resume-builder-add-item", function () {
-      $itemsContainer.append(template({ index: index }));
+    function addNewItem() {
+      var newItem = $template.html().replace(/\{\{data\.index\}\}/g, index);
+      $itemsContainer.append(newItem);
       index++;
+    }
+
+    $repeater.on("click", ".wp-resume-builder-add-item", function () {
+      addNewItem();
     });
 
     $repeater.on("click", ".wp-resume-builder-remove-item", function () {
