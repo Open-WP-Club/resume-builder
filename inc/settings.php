@@ -29,8 +29,8 @@ class WP_Resume_Builder_Settings
     }
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_script('wp-color-picker');
-    wp_enqueue_style('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../css/admin-style.css', array(), '1.0.0');
-    wp_enqueue_script('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../js/admin-script.js', array('jquery', 'wp-color-picker'), '1.0.0', true);
+    wp_enqueue_style('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../assets/css/admin-style.css', array(), '1.0.0');
+    wp_enqueue_script('wp-resume-builder-admin', plugin_dir_url(__FILE__) . '../assets/js/admin-script.js', array('jquery', 'wp-color-picker'), '1.0.0', true);
   }
 
   public function create_admin_page()

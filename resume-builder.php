@@ -24,8 +24,8 @@ define('WP_RESUME_BUILDER_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_RESUME_BUILDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include necessary files
-require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'inc/settings.php');
-require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'inc/shortcode.php');
+require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'assets/inc/settings.php');
+require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'assets/inc/shortcode.php');
 
 // Initialize the plugin
 function wp_resume_builder_init()
