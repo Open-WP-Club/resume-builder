@@ -24,4 +24,15 @@ jQuery(document).ready(function ($) {
       $(this).closest(".wp-resume-builder-repeater-item").remove();
     });
   });
+
+  // Handle tab switching
+  $(".nav-tab-wrapper a").on("click", function (e) {
+    e.preventDefault();
+    var target = $(this).attr("href").split("tab=")[1];
+    $(".wp-resume-builder-tab").hide();
+    $("#tab-" + target).show();
+    $(".nav-tab").removeClass("nav-tab-active");
+    $(this).addClass("nav-tab-active");
+    history.pushState(null, "", $(this).attr("href"));
+  });
 });

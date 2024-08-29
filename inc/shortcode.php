@@ -5,7 +5,7 @@ class WP_Resume_Builder_Shortcode
 
   public function init()
   {
-    $this->options = get_option('wp_resume_builder_options');
+    $this->options = get_option('wp_resume_builder_options', array());
     add_shortcode('wp_resume', array($this, 'render_resume'));
   }
 
@@ -55,8 +55,8 @@ class WP_Resume_Builder_Shortcode
   {
 ?>
     <div class="personal-info">
-      <h1><?php echo esc_html($this->options['name']); ?></h1>
-      <p class="tagline"><?php echo esc_html($this->options['tagline']); ?></p>
+      <h1><?php echo esc_html($this->options['name'] ?? ''); ?></h1>
+      <p class="tagline"><?php echo esc_html($this->options['tagline'] ?? ''); ?></p>
       <div class="contact-info">
         <?php if (!empty($this->options['email'])) : ?>
           <a href="mailto:<?php echo esc_attr($this->options['email']); ?>" title="Email">
@@ -100,7 +100,7 @@ class WP_Resume_Builder_Shortcode
   ?>
     <div class="objective-section">
       <h2><?php echo esc_html($this->options['objective_title'] ?? 'Objective'); ?></h2>
-      <p><?php echo wp_kses_post($this->options['objective_text']); ?></p>
+      <p><?php echo wp_kses_post($this->options['objective_text'] ?? ''); ?></p>
     </div>
   <?php
   }
