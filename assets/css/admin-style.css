@@ -1,15 +1,25 @@
 .wp-resume-builder-shortcode-info {
-  background: #f1f1f1;
-  border-left: 4px solid #0073aa;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
   padding: 10px;
   margin-bottom: 20px;
 }
 
 .wp-resume-builder-shortcode-info code {
   display: inline-block;
-  padding: 5px 10px;
+  padding: 3px 5px;
+  margin: 0 1px;
+  background: #f0f0f1;
+  border-radius: 3px;
+}
+
+.wp-resume-builder-tab {
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .wp-resume-builder-field {
@@ -19,7 +29,7 @@
 .wp-resume-builder-field label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .wp-resume-builder-field input[type="text"],
@@ -46,4 +56,13 @@
 
 .wp-resume-builder-add-item {
   margin-top: 10px;
+}
+
+/* WordPress Color Picker */
+.wp-picker-container {
+  display: inline-block;
+}
+
+.wp-picker-container .wp-color-result.button {
+  margin: 0 6px 6px 0;
 }

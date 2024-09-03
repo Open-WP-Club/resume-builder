@@ -36,7 +36,7 @@ class WP_Resume_Builder_Settings
 
   public function create_admin_page()
   {
-    $this->options = get_option($this->option_name);
+    $this->options = get_option($this->option_name, array());
     $this->active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'personal';
 ?>
     <div class="wrap">
@@ -273,26 +273,31 @@ class WP_Resume_Builder_Settings
 
   public function sanitize($input)
   {
-    $current_options = get_option($this->option_name, array());
-    $active_tab = isset($_POST['wp_resume_builder_active_tab']) ? $_POST['wp_resume_builder_active_tab'] : 'personal';
+    $sanitized_input = array();
+    $tabs = array('personal', 'objective', 'experience', 'education', 'skills', 'design');
 
-    if (!is_array($current_options)) {
-      $current_options = array();
-    }
-
-    if (!isset($current_options[$active_tab])) {
-      $current_options[$active_tab] = array();
-    }
-
-    foreach ($input[$active_tab] as $key => $value) {
-      if (is_array($value)) {
-        $current_options[$active_tab][$key] = $this->sanitize_array($value);
-      } else {
-        $current_options[$active_tab][$key] = sanitize_text_field($value);
+    foreach ($tabs as $tab) {
+      if (isset($input[$tab]) && is_array($input[$tab])) {
+        $sanitized_input[$tab] = $this->sanitize_tab_data($input[$tab]);
       }
     }
 
-    return $current_options;
+    return $sanitized_input;
+  }
+
+  private function sanitize_tab_data($tab_data)
+  {
+    $sanitized_tab_data = array();
+
+    foreach ($tab_data as $key => $value) {
+      if (is_array($value)) {
+        $sanitized_tab_data[$key] = $this->sanitize_array($value);
+      } else {
+        $sanitized_tab_data[$key] = sanitize_text_field($value);
+      }
+    }
+
+    return $sanitized_tab_data;
   }
 
   private function sanitize_array($array)
