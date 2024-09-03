@@ -4,7 +4,7 @@
  * Plugin Name:             WP Resume Builder
  * Plugin URI:              https://github.com/Open-WP-Club/resume-builder
  * Description:             A plugin to create and display a resume using a shortcode
- * Version:                 0.0.1
+ * Version:                 1.0.1
  * Author:                  Gabriel Kanev
  * Author URI:              https://gkanev.com
  * License:                 GPL-2.0 License
@@ -19,13 +19,13 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WP_RESUME_BUILDER_VERSION', '0.0.1');
+define('WP_RESUME_BUILDER_VERSION', '1.0.1');
 define('WP_RESUME_BUILDER_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_RESUME_BUILDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include necessary files
-require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'assets/inc/settings.php');
-require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'assets/inc/shortcode.php');
+require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'inc/settings.php');
+require_once(WP_RESUME_BUILDER_PLUGIN_DIR . 'inc/shortcode.php');
 
 // Initialize the plugin
 function wp_resume_builder_init()

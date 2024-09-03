@@ -30,9 +30,16 @@ jQuery(document).ready(function ($) {
     e.preventDefault();
     var target = $(this).attr("href").split("tab=")[1];
     $(".wp-resume-builder-tab").hide();
-    $("#tab-" + target).show();
+    $("#wp-resume-builder-tab-" + target).show();
     $(".nav-tab").removeClass("nav-tab-active");
     $(this).addClass("nav-tab-active");
-    history.pushState(null, "", $(this).attr("href"));
+    $("#wp-resume-builder-active-tab").val(target);
   });
+
+  // Show the active tab on page load
+  var activeTab = $("#wp-resume-builder-active-tab").val();
+  $("#wp-resume-builder-tab-" + activeTab).show();
+  $(".nav-tab-wrapper a[href*='tab=" + activeTab + "']").addClass(
+    "nav-tab-active"
+  );
 });

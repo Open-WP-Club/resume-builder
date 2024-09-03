@@ -3,6 +3,7 @@ class WP_Resume_Builder_Settings
 {
   private $options;
   private $active_tab;
+  private $option_name = 'wp_resume_builder_options';
 
   public function init()
   {
@@ -35,7 +36,7 @@ class WP_Resume_Builder_Settings
 
   public function create_admin_page()
   {
-    $this->options = get_option('wp_resume_builder_options');
+    $this->options = get_option($this->option_name);
     $this->active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'personal';
 ?>
     <div class="wrap">
@@ -56,7 +57,8 @@ class WP_Resume_Builder_Settings
       <form method="post" action="options.php">
         <?php
         settings_fields('wp_resume_builder_option_group');
-        $this->render_active_tab();
+        echo '<input type="hidden" id="wp-resume-builder-active-tab" name="wp_resume_builder_active_tab" value="' . esc_attr($this->active_tab) . '">';
+        $this->render_all_tabs();
         submit_button();
         ?>
       </form>
@@ -64,9 +66,19 @@ class WP_Resume_Builder_Settings
 <?php
   }
 
-  private function render_active_tab()
+  private function render_all_tabs()
   {
-    switch ($this->active_tab) {
+    $tabs = array('personal', 'objective', 'experience', 'education', 'skills', 'design');
+    foreach ($tabs as $tab) {
+      echo '<div id="wp-resume-builder-tab-' . $tab . '" class="wp-resume-builder-tab" style="display: ' . ($this->active_tab == $tab ? 'block' : 'none') . ';">';
+      $this->render_tab($tab);
+      echo '</div>';
+    }
+  }
+
+  private function render_tab($tab)
+  {
+    switch ($tab) {
       case 'personal':
         $this->render_personal_info_fields();
         break;
@@ -161,47 +173,47 @@ class WP_Resume_Builder_Settings
 
   private function render_text_field($field, $label)
   {
-    $value = isset($this->options[$field]) ? esc_attr($this->options[$field]) : '';
+    $value = isset($this->options[$this->active_tab][$field]) ? esc_attr($this->options[$this->active_tab][$field]) : '';
     echo "<div class='wp-resume-builder-field'>";
     echo "<label for='$field'>$label</label>";
-    echo "<input type='text' id='$field' name='wp_resume_builder_options[$field]' value='$value' />";
+    echo "<input type='text' id='$field' name='wp_resume_builder_options[{$this->active_tab}][$field]' value='$value' />";
     echo "</div>";
   }
 
   private function render_textarea_field($field, $label)
   {
-    $value = isset($this->options[$field]) ? esc_textarea($this->options[$field]) : '';
+    $value = isset($this->options[$this->active_tab][$field]) ? esc_textarea($this->options[$this->active_tab][$field]) : '';
     echo "<div class='wp-resume-builder-field'>";
     echo "<label for='$field'>$label</label>";
-    echo "<textarea id='$field' name='wp_resume_builder_options[$field]'>$value</textarea>";
+    echo "<textarea id='$field' name='wp_resume_builder_options[{$this->active_tab}][$field]'>$value</textarea>";
     echo "</div>";
   }
 
   private function render_checkbox_field($field, $label)
   {
-    $checked = isset($this->options[$field]) && $this->options[$field] ? 'checked' : '';
+    $checked = isset($this->options[$this->active_tab][$field]) && $this->options[$this->active_tab][$field] ? 'checked' : '';
     echo "<div class='wp-resume-builder-field'>";
     echo "<label for='$field'>";
-    echo "<input type='checkbox' id='$field' name='wp_resume_builder_options[$field]' value='1' $checked />";
+    echo "<input type='checkbox' id='$field' name='wp_resume_builder_options[{$this->active_tab}][$field]' value='1' $checked />";
     echo " $label</label>";
     echo "</div>";
   }
 
   private function render_color_field($field, $label)
   {
-    $value = isset($this->options[$field]) ? esc_attr($this->options[$field]) : '';
+    $value = isset($this->options[$this->active_tab][$field]) ? esc_attr($this->options[$this->active_tab][$field]) : '';
     echo "<div class='wp-resume-builder-field'>";
     echo "<label for='$field'>$label</label>";
-    echo "<input type='text' id='$field' name='wp_resume_builder_options[$field]' value='$value' class='wp-resume-builder-color-picker' />";
+    echo "<input type='text' id='$field' name='wp_resume_builder_options[{$this->active_tab}][$field]' value='$value' class='wp-resume-builder-color-picker' />";
     echo "</div>";
   }
 
   private function render_select_field($field, $label, $options)
   {
-    $value = isset($this->options[$field]) ? esc_attr($this->options[$field]) : '';
+    $value = isset($this->options[$this->active_tab][$field]) ? esc_attr($this->options[$this->active_tab][$field]) : '';
     echo "<div class='wp-resume-builder-field'>";
     echo "<label for='$field'>$label</label>";
-    echo "<select id='$field' name='wp_resume_builder_options[$field]'>";
+    echo "<select id='$field' name='wp_resume_builder_options[{$this->active_tab}][$field]'>";
     foreach ($options as $option_value => $option_label) {
       $selected = $value === $option_value ? 'selected' : '';
       echo "<option value='$option_value' $selected>$option_label</option>";
@@ -216,8 +228,8 @@ class WP_Resume_Builder_Settings
     echo "<label>$label</label>";
     echo "<div class='wp-resume-builder-repeater-items'>";
 
-    if (isset($this->options[$field]) && is_array($this->options[$field])) {
-      foreach ($this->options[$field] as $index => $item) {
+    if (isset($this->options[$this->active_tab][$field]) && is_array($this->options[$this->active_tab][$field])) {
+      foreach ($this->options[$this->active_tab][$field] as $index => $item) {
         $this->render_repeater_item($field, $sub_fields, $index, $item);
       }
     }
@@ -240,9 +252,9 @@ class WP_Resume_Builder_Settings
       echo "<div class='wp-resume-builder-sub-field'>";
       echo "<label for='{$field}_{$index}_{$sub_field}'>$sub_label</label>";
       if ($sub_field === 'description') {
-        echo "<textarea id='{$field}_{$index}_{$sub_field}' name='wp_resume_builder_options[$field][$index][$sub_field]'>$value</textarea>";
+        echo "<textarea id='{$field}_{$index}_{$sub_field}' name='wp_resume_builder_options[{$this->active_tab}][$field][$index][$sub_field]'>$value</textarea>";
       } else {
-        echo "<input type='text' id='{$field}_{$index}_{$sub_field}' name='wp_resume_builder_options[$field][$index][$sub_field]' value='$value' />";
+        echo "<input type='text' id='{$field}_{$index}_{$sub_field}' name='wp_resume_builder_options[{$this->active_tab}][$field][$index][$sub_field]' value='$value' />";
       }
       echo "</div>";
     }
@@ -254,23 +266,44 @@ class WP_Resume_Builder_Settings
   {
     register_setting(
       'wp_resume_builder_option_group',
-      'wp_resume_builder_options',
+      $this->option_name,
       array($this, 'sanitize')
     );
   }
 
   public function sanitize($input)
   {
-    $new_input = array();
+    $current_options = get_option($this->option_name, array());
+    $active_tab = isset($_POST['wp_resume_builder_active_tab']) ? $_POST['wp_resume_builder_active_tab'] : 'personal';
 
-    foreach ($input as $key => $value) {
+    if (!is_array($current_options)) {
+      $current_options = array();
+    }
+
+    if (!isset($current_options[$active_tab])) {
+      $current_options[$active_tab] = array();
+    }
+
+    foreach ($input[$active_tab] as $key => $value) {
       if (is_array($value)) {
-        $new_input[$key] = $this->sanitize($value);
+        $current_options[$active_tab][$key] = $this->sanitize_array($value);
       } else {
-        $new_input[$key] = sanitize_text_field($value);
+        $current_options[$active_tab][$key] = sanitize_text_field($value);
       }
     }
 
-    return $new_input;
+    return $current_options;
+  }
+
+  private function sanitize_array($array)
+  {
+    foreach ($array as $key => $value) {
+      if (is_array($value)) {
+        $array[$key] = $this->sanitize_array($value);
+      } else {
+        $array[$key] = sanitize_text_field($value);
+      }
+    }
+    return $array;
   }
 }
