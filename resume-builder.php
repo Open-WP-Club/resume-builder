@@ -10,7 +10,7 @@
  * License:                 GPL-2.0 License
  * Requires at least:       6.0
  * Requires PHP:            7.4
- * Tested up to:            6.6.2
+ * Tested up to:            7.1.4
  */
 
 // Exit if accessed directly
